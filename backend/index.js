@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+
 const UserRoutes = require('./routes/UserRoutes');
 const DoctorRoutes = require('./routes/DoctorRoutes');
 const AppointmentRoutes = require('./routes/AppointmentRoutes');

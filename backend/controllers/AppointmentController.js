@@ -57,7 +57,7 @@ const updateAppointment = async (req, res)=>{
     }
 }
 
-module.export = {
+module.exports = {
     getAllAppointments,
     getAppointmentById,
     createAppointment,
