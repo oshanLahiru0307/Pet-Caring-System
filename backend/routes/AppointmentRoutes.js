@@ -12,15 +12,15 @@ const {
 router.get('/', getAllAppointments);
 
 //get appointment by id
-router.get('/:appointmentId', getAppointmentById);
+router.get('/:id', getAppointmentById);
 
 //create new appointment
 router.post('/', createAppointment);
 
 //delete appointment by id
-router.delete('/:appointmentId', deleteAppointment);
+router.delete('/:id', deleteAppointment);
 
 //update appointment by id
-router.patch('/:appointmentId', updateAppointment);
+router.patch('/:id', updateAppointment);
 
 module.exports = router;

@@ -11,8 +11,8 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     try {
-        userId = req.params;
-        const user = await UserSchema.findById({_id:userId});
+        const {id} = req.params;
+        const user = await UserSchema.findById({_id:id});
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -34,8 +34,8 @@ const createNewUser = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     try {
-        userId = req.params;
-        const deletedUser = await UserSchema.findByIdAndDelete({_id:userId});
+        const {id} = req.params;
+        const deletedUser = await UserSchema.findByIdAndDelete({_id:id});
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -47,11 +47,10 @@ const deleteUserById = async (req, res) => {
 
 const updateUserById = async (req, res) => {
     try {   
-        userId = req.params;
+        const {id} = req.params;
         const updatedUser = await UserSchema.findByIdAndUpdate(
-            {_id:userId},
-            {$set: req.body},
-            {new: true}
+            {_id:id},
+            {...req.body}
         );
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });

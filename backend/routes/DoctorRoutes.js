@@ -13,16 +13,16 @@ const {
 router.get('/', getAllDoctors);
 
 //get doctor by id
-router.get('/:doctorId', getDoctorById);
+router.get('/:id', getDoctorById);
 
 //create new doctor
 router.post('/', createNewDoctor);
 
 //delete doctor by id
-router.delete('/:doctorId', deleteDoctorById);
+router.delete('/:id', deleteDoctorById);
 
 //update doctor by id
-router.put('/:doctorId', updateDoctorById);
+router.patch('/:id', updateDoctorById);
 
 module.exports = router;
 

@@ -11,8 +11,8 @@ const getAllDoctors = async (req, res)=>{
 
 const getDoctorById = async (req, res)=>{
     try {
-        const {doctorId} = req.params
-        const doctor = await DoctorSchema.findById({_id:doctorId})
+        const {id} = req.params
+        const doctor = await DoctorSchema.findById({_id:id})
         if(!doctor){
             return res.status(404).json({message: 'Doctor not found'})
         }
@@ -34,8 +34,8 @@ const createNewDoctor = async (req, res)=>{
 
 const deleteDoctorById = async (req, res)=>{
     try {
-        const {doctorId} = req.params
-        const deletedDoctor = await DoctorSchema.findByIdAndDelete({_id:doctorId})
+        const {id} = req.params
+        const deletedDoctor = await DoctorSchema.findByIdAndDelete({_id:id})
         if(!deletedDoctor){ 
             return res.status(404).json({message: 'Doctor not found'})
         }
@@ -47,8 +47,8 @@ const deleteDoctorById = async (req, res)=>{
 
 const updateDoctorById = async (req, res)=>{
     try {
-        const {doctorId} = req.params
-        const updatedDoctor = await DoctorSchema.findByIdAndUpdate({_id:doctorId},{...req.body})
+        const {id} = req.params
+        const updatedDoctor = await DoctorSchema.findByIdAndUpdate({_id:id},{...req.body})
         if(!updatedDoctor){
             return res.status(404).json({message: 'Doctor not found'})
         }

@@ -11,8 +11,8 @@ const getAllAppointments = async (req, res) => {
 
 const getAppointmentById = async (req, res) => {
     try {
-        appointmentId = req.params;
-        const appointment = await AppointmentSchema.findById({_id:appointmentId});
+        const {id} = req.params;
+        const appointment = await AppointmentSchema.findById({_id:id});
         if (!appointment) {
             return res.status(404).json({ message: 'Appointment not found' });
         }
@@ -33,8 +33,8 @@ const createAppointment = async (req, res)=> {
 
 const deleteAppointment = async (req, res)=> {
     try{
-        const {appoinmentId} = req.params;
-        const deletedAppoinment = await AppointmentSchema.findByIdAndDelete({_id:appoinmentId});
+        const {id} = req.params;
+        const deletedAppoinment = await AppointmentSchema.findByIdAndDelete({_id:id});
         if(!deletedAppoinment){
             return res.status(404).json({message:"Appoinment not found"});
         }
@@ -46,8 +46,8 @@ const deleteAppointment = async (req, res)=> {
 
 const updateAppointment = async (req, res)=>{
     try{
-        const {appointmentId} = req.params;
-        const updatedAppointment = await AppointmentSchema.findByIdAndUpdate({_id:appointmentId},{...req.body});
+        const {id} = req.params;
+        const updatedAppointment = await AppointmentSchema.findByIdAndUpdate({_id:id},{...req.body});
         if(!updatedAppointment){
             return res.status(404).json({message:"Appoinment not found"});
         }
