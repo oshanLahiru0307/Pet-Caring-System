@@ -1,8 +1,0 @@
-# env files
-backend/.env
-
-# node modules
-backend/node_modules
-adminfrontend/node_modules
-userfrontend/node_modules
-
