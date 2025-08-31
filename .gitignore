@@ -1,5 +1,8 @@
 # env files
-./backend/.env
+backend/.env
 
 # node modules
-./backend/node_modules
+backend/node_modules
+adminfrontend/node_modules
+userfrontend/node_modules
+

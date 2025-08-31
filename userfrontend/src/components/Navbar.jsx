@@ -106,6 +106,15 @@ const Navbar = () => {
 
           {/* Appointment type */}
           <Form.Item
+            name="contact"
+            label="Owner Contact"
+            rules={[{ required: true, message: "Please Enter Owner's contact" }]}
+          >
+            <Input placeholder="Enter pet's type" />
+          </Form.Item>
+
+          {/* Pet type */}
+          <Form.Item
             name="type"
             label="Pet Type"
             rules={[{ required: true, message: "Please select pet type" }]}

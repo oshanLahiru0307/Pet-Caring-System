@@ -22,6 +22,19 @@ const getAppointmentById = async (req, res) => {
     }
 }
 
+const getAppointmentByStatus = async (req, res) => {
+    try {
+        const {status} = req.params;
+        const appointment = await AppointmentSchema.find({status:status});
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+        res.status(200).json(appointment);
+    }catch (error) {
+         res.status(500).json({ message: error.message });
+    }
+}
+
 const createAppointment = async (req, res)=> {
     try{
         const newAppoinment = await AppointmentSchema.create(req.body);
@@ -60,6 +73,7 @@ const updateAppointment = async (req, res)=>{
 module.exports = {
     getAllAppointments,
     getAppointmentById,
+    getAppointmentByStatus,
     createAppointment,
     deleteAppointment,
     updateAppointment
