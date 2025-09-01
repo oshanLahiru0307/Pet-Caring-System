@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const AppointmentSchema = new Schema({ 
+  appointmentId:{
+    type: String,
+    required: true
+  },
   pet: {
     type: String,
     required: true

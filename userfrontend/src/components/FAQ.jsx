@@ -21,27 +21,32 @@ const faqs = [
 
 const FAQ = () => {
   return (
-    <section id="faq" className="py-16 sm:py-20 bg-white">
+    <section id="faq" className="py-16 sm:py-20" style={{ backgroundColor: 'white' }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-teal-800">Frequently Asked Questions</h2>
-          <p className="mt-3 text-teal-700">Quick answers to common questions.</p>
+          <h2 className="text-3xl font-bold tracking-tight" style={{ color: '#54413C' }}>Frequently Asked Questions</h2>
+          <p className="mt-3" style={{ color: '#333333' }}>Quick answers to common questions.</p>
         </div>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
           {faqs.map((item) => (
-            <div key={item.q} className="rounded-2xl border border-teal-100 bg-teal-50 p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-teal-800">{item.q}</h3>
-              <p className="mt-2 text-teal-700">{item.a}</p>
+            <div
+              key={item.q}
+              className="rounded-2xl border p-6 shadow-sm"
+              style={{
+                borderColor: '#FFD58E',
+                backgroundColor: '#FFD58E',
+                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+              }}
+            >
+              <h3 className="text-lg font-semibold" style={{ color: '#54413C' }}>{item.q}</h3>
+              <p className="mt-2" style={{ color: '#333333' }}>{item.a}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default FAQ;
-
-
-

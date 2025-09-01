@@ -31,15 +31,13 @@ const AdminDashboard = () => {
         trigger={null}
         style={{ height: "100vh", position: "fixed", left: 0, top: 0 }}
       >
-        {/* Logo / Header Section */}
-        <div
-          style={{
-            height: 64,
-            margin: 16,
-            background: "rgba(255, 255, 255, 0.2)",
-            borderRadius: 8,
-          }}
-        />
+        <h1 style={{
+          color: 'white',
+          textAlign: 'center',
+          fontSize:'18px',
+          fontWeight:'bold',
+          margin:'20px 5px 20px 5px'
+        }}>PAW CARE</h1>
 
         {/* Sidebar Menu */}
         <Menu
@@ -55,21 +53,21 @@ const AdminDashboard = () => {
           <Menu.Item
             key="1"
             icon={<DashboardOutlined />}
-            onClick={() => (state.activeIndex = 1)}
+            onClick={() => (state.adminActiveIndex = 1)}
           >
             Dashboard
           </Menu.Item>
           <Menu.Item
             key="2"
             icon={<CalendarOutlined />}
-            onClick={() => (state.activeIndex = 2)}
+            onClick={() => (state.adminActiveIndex = 2)}
           >
             Appointments
           </Menu.Item>
           <Menu.Item
             key="3"
             icon={<TeamOutlined />}
-            onClick={() => (state.activeIndex = 3)}
+            onClick={() => (state.adminActiveIndex = 3)}
           >
             Doctors
           </Menu.Item>
@@ -106,9 +104,9 @@ const AdminDashboard = () => {
             background: "#fff",
           }}
         >
-          {snap.activeIndex === 1 && <Dashboard />}
-          {snap.activeIndex === 2 && <Appointments />}
-          {snap.activeIndex === 3 && <Doctors />}
+          {snap.adminActiveIndex === 1 && <Dashboard />}
+          {snap.adminActiveIndex === 2 && <Appointments />}
+          {snap.adminActiveIndex === 3 && <Doctors />}
         </Content>
       </Layout>
     </Layout>

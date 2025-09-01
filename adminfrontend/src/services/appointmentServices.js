@@ -66,6 +66,8 @@ class AppointmentsServices {
         }
     }
 
+
+
 }
 
 export default AppointmentsServices;

@@ -6,7 +6,8 @@ const {
     getAppointmentByStatus, 
     createAppointment, 
     deleteAppointment, 
-    updateAppointment } = require('../controllers/AppointmentController');
+    updateAppointment,
+    getAppointmentByUsername } = require('../controllers/AppointmentController');
 
 
 //get all appointments
@@ -17,6 +18,9 @@ router.get('/:id', getAppointmentById);
 
 //get appointment by id
 router.get('/status/:status', getAppointmentByStatus);
+
+//get appointment by user name
+router.get('/user/:user', getAppointmentByUsername);
 
 //create new appointment
 router.post('/', createAppointment);

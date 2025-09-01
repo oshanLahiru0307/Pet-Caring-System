@@ -50,20 +50,43 @@ const DoctorComponent = () => {
 
     const handleAddDoctor = async (values) => {
         try {
-            if (!selectedDoctor) {
-                await DoctorServices.createDoctor(values)
-                fetchDoctors()
-                setModalVisible(false)
-                message.success('Doctor added successfully')
-            } else {
-                await DoctorServices.updateDoctor(selectedDoctor._id, values)
-                fetchDoctors()
-                setModalVisible(false)
-                message.success('Doctor updated successfully')
+            let doctorData = { ...values };
+            if (typeof doctorData.availabilityHours === 'string') {
+                doctorData.availabilityHours = doctorData.availabilityHours.split(',').map(s => s.trim());
             }
+
+            if (!selectedDoctor) {
+                // Generate a new sequential ID
+                const sortedDoctors = [...doctors].sort((a, b) => {
+                    const idA = parseInt(a.doctorId?.substring(1) || '0', 10);
+                    const idB = parseInt(b.doctorId?.substring(1) || '0', 10);
+                    return idA - idB;
+                });
+
+                const lastDoctor = sortedDoctors[sortedDoctors.length - 1];
+                let nextIdNumber = 1;
+                if (lastDoctor && lastDoctor.doctorId) {
+                    const lastNumber = parseInt(lastDoctor.doctorId.substring(1), 10);
+                    nextIdNumber = lastNumber + 1;
+                }
+
+                const newDoctorId = `D${String(nextIdNumber).padStart(3, '0')}`;
+                doctorData = { ...doctorData, doctorId: newDoctorId };
+
+                await DoctorServices.createDoctor(doctorData);
+                message.success(`Doctor added successfully with ID: ${newDoctorId}`);
+            } else {
+                await DoctorServices.updateDoctor(selectedDoctor._id, doctorData);
+                message.success('Doctor updated successfully');
+            }
+
+            fetchDoctors();
+            setModalVisible(false);
+            form.resetFields();
+            setSelectedDoctor(null);
         } catch (error) {
-            console.error('Error adding doctor:', error)
-            message.error('Failed to add doctor')
+            console.error('Error saving doctor:', error);
+            message.error('Failed to save doctor');
         }
     }
 
@@ -72,28 +95,28 @@ const DoctorComponent = () => {
     }
 
     const filteredDoctors = doctors.filter(doctor => {
-        const lowerCaseSearch = searchText.toLowerCase()
+        const lowerCaseSearch = searchText.toLowerCase();
         return (
-            doctor.name.toLowerCase().includes(lowerCaseSearch) ||
-            doctor.specialty.toLowerCase().includes(lowerCaseSearch) ||
-            doctor.contact.toLowerCase().includes(lowerCaseSearch) ||
-            doctor.email.toLowerCase().includes(lowerCaseSearch)
-        )
-    })
+            (doctor.doctorId && doctor.doctorId.toLowerCase().includes(lowerCaseSearch)) ||
+            (doctor.name && doctor.name.toLowerCase().includes(lowerCaseSearch)) ||
+            (doctor.specialty && doctor.specialty.toLowerCase().includes(lowerCaseSearch)) ||
+            (doctor.contact && doctor.contact.toLowerCase().includes(lowerCaseSearch)) ||
+            (doctor.email && doctor.email.toLowerCase().includes(lowerCaseSearch))
+        );
+    });
 
     const generatePDF = () => {
         const doc = new jsPDF();
         const reportTitle = "Doctors Report";
         const printedDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
-        // Add Report Title and Date
         doc.setFontSize(22);
         doc.text(reportTitle, 14, 20);
         doc.setFontSize(10);
         doc.text(`Printed Date: ${printedDate}`, 200, 20, null, null, 'right');
 
-        // Define table columns
         const columns = [
+            "ID",
             "Name",
             "Specialty",
             "Contact",
@@ -102,19 +125,18 @@ const DoctorComponent = () => {
             "Available Hours",
         ];
 
-        // Map filtered data to rows
         const rows = filteredDoctors.map(doctor => [
+            doctor.doctorId || 'N/A',
             doctor.name,
             doctor.specialty,
             doctor.contact,
             doctor.email,
             doctor.availabilityDays.join(', '),
-            doctor.availabilityHours.join(', '),
+            Array.isArray(doctor.availabilityHours) ? doctor.availabilityHours.join(', ') : '',
         ]);
 
-        // Use autoTable to generate the table
-        autotable(doc,{
-            startY: 30, // Start table below the title
+        autotable(doc, {
+            startY: 30,
             head: [columns],
             body: rows,
             theme: 'striped',
@@ -128,11 +150,20 @@ const DoctorComponent = () => {
             },
         });
 
-        // Save the PDF
         doc.save("doctors_report.pdf");
     };
 
     const columns = [
+        {
+            title: "ID",
+            dataIndex: "doctorId",
+            key: "doctorId",
+            sorter: (a, b) => {
+                const idA = parseInt(a.doctorId?.substring(1) || '0', 10);
+                const idB = parseInt(b.doctorId?.substring(1) || '0', 10);
+                return idA - idB;
+            },
+        },
         {
             title: "Name",
             dataIndex: "name",
@@ -204,10 +235,14 @@ const DoctorComponent = () => {
                 Doctors Details
             </h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-                <Button type="primary" onClick={() => setModalVisible(true)}>Add Doctor</Button>
+                <Button type="primary" onClick={() => {
+                    setSelectedDoctor(null);
+                    form.resetFields();
+                    setModalVisible(true);
+                }}>Add Doctor</Button>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
                     <Input.Search 
-                        placeholder="Search by Name" 
+                        placeholder="Search by ID or Name" 
                         allowClear 
                         onChange={(e) => setSearchText(e.target.value)} 
                         style={{ width: 300 }} 
@@ -220,9 +255,9 @@ const DoctorComponent = () => {
             <Modal title={selectedDoctor ? "Edit Doctor" : "Add Doctor"}
                 open={modalVisible}
                 onCancel={() => {
-                    setModalVisible(false)
-                    form.resetFields()
-                    setSelectedDoctor(null)
+                    setModalVisible(false);
+                    form.resetFields();
+                    setSelectedDoctor(null);
                 }}
                 onOk={() => {
                     form
@@ -235,6 +270,9 @@ const DoctorComponent = () => {
                         });
                 }}>
                 <Form form={form} layout="vertical">
+                    <Form.Item name="doctorId" hidden>
+                        <Input />
+                    </Form.Item>
                     {/* Name */}
                     <Form.Item
                         name="name"
@@ -257,7 +295,10 @@ const DoctorComponent = () => {
                     <Form.Item
                         name="contact"
                         label="Contact Number"
-                        rules={[{ required: true, message: 'Please enter the contact number!' }]}
+                        rules={[
+                            { required: true, message: "Please enter owner's contact" },
+                            { pattern: /^\d{10}$/, message: "Contact number must be 10 digits" },
+                          ]}
                     >
                         <Input placeholder="e.g., +1234567890" />
                     </Form.Item>
@@ -298,4 +339,4 @@ const DoctorComponent = () => {
     )
 }
 
-export default DoctorComponent
+export default DoctorComponent;

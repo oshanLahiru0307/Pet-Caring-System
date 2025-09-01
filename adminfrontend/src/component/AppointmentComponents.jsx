@@ -5,7 +5,7 @@ import DoctorServices from "../services/doctorServices";
 import moment from "moment";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
-import autotable from"jspdf-autotable";
+import autotable from "jspdf-autotable";
 
 const { Option } = Select;
 
@@ -14,7 +14,7 @@ const AppointmentComponents = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [doctors, setDoctors] = useState([]);
-    const [searchText, setSearchText] = useState(''); // New state for search functionality
+    const [searchText, setSearchText] = useState('');
     const [form] = Form.useForm();
 
     const fetchAppointments = async () => {
@@ -42,14 +42,30 @@ const AppointmentComponents = () => {
 
     const handleAddAppointment = async (values) => {
         try {
-            const appointmentData = {
+            let appointmentData = {
                 ...values,
                 appointmentDate: dayjs(values.appointmentDate).toISOString(),
             };
 
             if (!selectedAppointment) {
+                const sortedAppointments = [...appointments].sort((a, b) => {
+                    const idA = parseInt(a.appointmentId?.substring(1) || '0', 10);
+                    const idB = parseInt(b.appointmentId?.substring(1) || '0', 10);
+                    return idA - idB;
+                });
+
+                const lastAppointment = sortedAppointments[sortedAppointments.length - 1];
+                let nextIdNumber = 1;
+                if (lastAppointment && lastAppointment.appointmentId) {
+                    const lastNumber = parseInt(lastAppointment.appointmentId.substring(1), 10);
+                    nextIdNumber = lastNumber + 1;
+                }
+
+                const newAppointmentId = `A${String(nextIdNumber).padStart(3, '0')}`;
+                appointmentData = { ...appointmentData, appointmentId: newAppointmentId };
+
                 await AppointmentServices.createAppointment(appointmentData);
-                message.success("Appointment added successfully");
+                message.success(`Appointment added successfully with ID: ${newAppointmentId}`);
             } else {
                 await AppointmentServices.updateAppointment(selectedAppointment._id, appointmentData);
                 message.success("Appointment updated successfully");
@@ -76,6 +92,11 @@ const AppointmentComponents = () => {
         }
     };
 
+    const disabledPastDates = (current) => {
+        // Can not select days before today
+        return current && current < dayjs().startOf('day');
+      };
+
     const handleTableChange = (pagination, filters, sorter) => {
         console.log("Table changed:", pagination, filters, sorter);
     };
@@ -95,6 +116,7 @@ const AppointmentComponents = () => {
         doc.text(reportTitle, 105, 40, null, null, 'center');
 
         const columns = [
+            "ID",
             "Pet Name",
             "Pet Type",
             "Owner",
@@ -104,6 +126,7 @@ const AppointmentComponents = () => {
         ];
 
         const rows = appointments.map(appt => [
+            appt.appointmentId || 'N/A',
             appt.pet,
             appt.type,
             appt.owner,
@@ -112,7 +135,7 @@ const AppointmentComponents = () => {
             appt.status
         ]);
 
-        autotable(doc,{
+        autotable(doc, {
             startY: 50,
             head: [columns],
             body: rows,
@@ -131,6 +154,16 @@ const AppointmentComponents = () => {
     };
 
     const columns = [
+        {
+            title: "ID",
+            dataIndex: "appointmentId",
+            key: "appointmentId",
+            sorter: (a, b) => {
+                const idA = parseInt(a.appointmentId?.substring(1) || '0', 10);
+                const idB = parseInt(b.appointmentId?.substring(1) || '0', 10);
+                return idA - idB;
+            },
+        },
         {
             title: "Pet Name",
             dataIndex: "pet",
@@ -206,13 +239,13 @@ const AppointmentComponents = () => {
         setModalVisible(true);
     };
 
-    // Filter appointments based on searchText
     const filteredAppointments = appointments.filter(appointment => {
         const lowerCaseSearch = searchText.toLowerCase();
         return (
-            appointment.pet.toLowerCase().includes(lowerCaseSearch) ||
-            appointment.owner.toLowerCase().includes(lowerCaseSearch) ||
-            appointment.contact.includes(lowerCaseSearch)
+            (appointment.appointmentId && appointment.appointmentId.toLowerCase().includes(lowerCaseSearch)) ||
+            (appointment.pet && appointment.pet.toLowerCase().includes(lowerCaseSearch)) ||
+            (appointment.owner && appointment.owner.toLowerCase().includes(lowerCaseSearch)) ||
+            (appointment.contact && appointment.contact.includes(lowerCaseSearch))
         );
     });
 
@@ -237,11 +270,10 @@ const AppointmentComponents = () => {
                     Add Appointment
                 </Button>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: 16 }}>
-
                     <Input.Search
-                        placeholder="Search by Pet, Owner, or Contact"
+                        placeholder="Search by ID, Pet, Owner, or Contact"
                         allowClear
-                        onChange={(e) => setSearchText(e.target.value)} // Updated to use onChange
+                        onChange={(e) => setSearchText(e.target.value)}
                         style={{ width: 300 }}
                     />
                     <Button
@@ -280,6 +312,9 @@ const AppointmentComponents = () => {
                 }}
             >
                 <Form form={form} layout="vertical">
+                    <Form.Item name="appointmentId" hidden>
+                        <Input />
+                    </Form.Item>
                     <Form.Item
                         name="pet"
                         label="Pet Name"
@@ -307,7 +342,10 @@ const AppointmentComponents = () => {
                     <Form.Item
                         name="contact"
                         label="Owner Contact"
-                        rules={[{ required: true, message: "Please enter owner's contact" }]}
+                        rules={[
+                            { required: true, message: "Please enter owner's contact" },
+                            { pattern: /^\d{10}$/, message: "Contact number must be 10 digits" },
+                          ]}
                     >
                         <Input placeholder="Enter owner's contact" />
                     </Form.Item>
@@ -335,13 +373,13 @@ const AppointmentComponents = () => {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%" }}
+                            disabledDate={disabledPastDates}
                         />
                     </Form.Item>
 
                     <Form.Item name="status" initialValue="pending">
                         <Select placeholder="status">
                             <Option value="pending">Pending</Option>
-                            <Option value="confirmed">Confirmed</Option>
                             <Option value="completed">Completed</Option>
                             <Option value="cancelled">Cancelled</Option>
                         </Select>

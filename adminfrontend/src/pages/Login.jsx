@@ -1,125 +1,99 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Card, Modal, message } from "antd";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
-});
-
-const PasswordResetSchema = Yup.object().shape({
-  newPassword: Yup.string().required("New password is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-});
+import React, {useState} from 'react';
+import { Button, Checkbox, Form, Input, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import image1 from '../assets/artistic-blurry-colorful-wallpaper-background.jpg'
+import { useSnapshot } from 'valtio';
+import state from '../store/state';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    setLoading(true);
-    setError("");
-    try {
-      localStorage.setItem("email", values.email);
-      if (values.email === "admin@gmail.com") {
-        navigate("/adminDashboard");
-        message.success("Welcome back");
-      } else if (values.email === "reception@gmail.com") {
-        navigate("/receptionDashboard");
-        message.success("Welcome back");
+    const onFinish = async (values) => {
+      setLoading(true);
+      try {
+        localStorage.setItem("email", values.email);
+        if (values.email === "admin@gmail.com") {
+          navigate("/adminDashboard");
+          message.success("Welcome back");
+        } else if (values.email === "reception@gmail.com") {
+          navigate("/receptionDashboard");
+          message.success("Welcome back");
+        }
+      } catch (error) {
+        message.error("L=login failed")
       }
+      setLoading(false);
+    };
 
-    } catch (error) {
-      setError(
-        error.response?.data?.message || "Login failed. Please try again."
-      );
-      message.error(
-        error.response?.data?.message || "Login failed. Please try again."
-      );
-    }
-    setLoading(false);
-    setSubmitting(false);
-  };
+    const onFinishFailed = (errorInfo) => {
+        message.error('Failed to submit form:', errorInfo);
+    };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundImage: 'url("/18129294.jpg")',
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <Card title="Login" style={{ width: 300, backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={LoginSchema}
-          onSubmit={handleSubmit}
+    return (
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                backgroundImage: `url(${image1})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+                padding: '20px',
+            }}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <Form onFinish={handleSubmit}>
-              <Form.Item
-                validateStatus={touched.email && errors.email ? "error" : ""}
-                help={touched.email && errors.email ? errors.email : ""}
-              >
-                <Input
-                  prefix={<UserOutlined className="site-form-item-icon" />}
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Item>
-              <Form.Item
-                validateStatus={
-                  touched.password && errors.password ? "error" : ""
-                }
-                help={
-                  touched.password && errors.password ? errors.password : ""
-                }
-              >
-                <Input
-                  prefix={<LockOutlined className="site-form-item-icon" />}
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Item>
-              <Form.Item>
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  loading={loading}
+            <Form
+                layout='vertical'
+                name="login_form"
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                style={{
+                    width: '400px',
+                    padding: 40,
+                    borderRadius: 8,
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                }}
+            >
+                <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#333' }}>Login</h2>
+                <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                        { required: true, message: 'Please input your email!' },
+                        { type: 'email', message: 'Please enter a valid email address!' }
+                    ]}
                 >
-                  Log in
-                </Button>
-              </Form.Item>
+                    <Input placeholder="Enter your email" />
+                </Form.Item>
+
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
+                >
+                    <Input.Password placeholder="Enter your password" />
+                </Form.Item>
+
+                <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 0 }}>
+                    <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ offset: 0 }}>
+                    <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={loading} block>
+                        Log in
+                    </Button>
+                </Form.Item>
+                <div style={{ textAlign: 'center', marginTop: 16 }}>
+                    Don't have an account? <p onClick={() => navigate('/register')} style={{ cursor:'pointer',color: '#1890ff' }}>Register now!</p>
+                </div>
             </Form>
-          )}
-        </Formik>
-      </Card>
-    </div>
-  );
-};
+        </div>
+    );
+}
 
 export default Login;

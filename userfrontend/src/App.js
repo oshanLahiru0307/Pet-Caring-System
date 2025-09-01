@@ -1,29 +1,35 @@
-
-
-import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Availability from './components/Availability';
-import Stats from './components/Stats';
-import Footer from './components/Footer';
-import About from './components/About';
-import FAQ from './components/FAQ';
-import Contact from './components/Contact';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import MyAppointment from './pages/MyAppointment';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import state from './store/state';
 
 const App = () => {
+  useEffect(() => {
+    // Check if user is logged in on app initialization
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    if (userId && userName) {
+      state.currentUser = userId;
+      state.currentUserName = userName;
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Availability />
-      <Stats />
-      <FAQ />
-      <Contact />
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen bg-white">
+
+        <Routes>
+          <Route path='/' element={<HomePage/>} />
+          <Route path='/myappointment' element={<MyAppointment />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+        </Routes>
+
+      </div>
+    </Router>
   );
 }
 

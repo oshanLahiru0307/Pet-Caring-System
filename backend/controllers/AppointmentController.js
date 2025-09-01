@@ -70,12 +70,28 @@ const updateAppointment = async (req, res)=>{
     }
 }
 
+const getAppointmentByUsername = async (req, res) => {
+    try {
+        const {user} = req.params;
+        const appointment = await AppointmentSchema.find({owner:user});
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+        res.status(200).json(appointment);
+    }catch (error) {
+         res.status(500).json({ message: error.message });
+    }
+}
+
+
+
 module.exports = {
     getAllAppointments,
     getAppointmentById,
     getAppointmentByStatus,
     createAppointment,
     deleteAppointment,
-    updateAppointment
+    updateAppointment,
+    getAppointmentByUsername
 }
 

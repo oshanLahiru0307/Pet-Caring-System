@@ -44,26 +44,37 @@ const Services = () => {
     <section id="services" className="py-16 sm:py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-teal-800">Our Services</h2>
-          <p className="mt-3 text-teal-700">Everything your pet needs under one roof.</p>
+          <h2 className="text-3xl font-bold tracking-tight" style={{ color: '#54413C' }}>Our Services</h2>
+          <p className="mt-3" style={{ color: '#333333' }}>Everything your pet needs under one roof.</p>
         </div>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-teal-100 bg-gradient-to-b from-teal-50 to-white p-6 shadow-sm hover:shadow-md transition">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-teal-100 text-teal-700 shadow-sm">
+            <div
+              key={s.title}
+              className="group rounded-2xl border p-6 shadow-sm hover:shadow-md transition"
+              style={{
+                borderColor: '#FFD58E',
+                background: 'linear-gradient(to bottom, #FFD58E, white)',
+              }}
+            >
+              <div
+                className="inline-flex h-12 w-12 items-center justify-center rounded-xl shadow-sm"
+                style={{
+                  backgroundColor: 'white',
+                  color: '#54413C',
+                }}
+              >
                 {s.icon}
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-teal-800">{s.title}</h3>
-              <p className="mt-2 text-sm text-teal-700">{s.description}</p>
+              <h3 className="mt-4 text-lg font-semibold" style={{ color: '#54413C' }}>{s.title}</h3>
+              <p className="mt-2 text-sm" style={{ color: '#333333' }}>{s.description}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default Services;
-
-
