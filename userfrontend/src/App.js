@@ -4,7 +4,15 @@ import HomePage from './pages/HomePage';
 import MyAppointment from './pages/MyAppointment';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import UserHomePage from './pages/UserHomePage';
+import DoctorHomePage from './pages/DoctorHomePage';
+import DoctorPosts from './pages/DoctorPosts'
+import UserAllPosts from './pages/UserAllPosts';
+import CreatePost from './pages/createPost';
 import state from './store/state';
+import {App as AntdApp} from "antd";
+
+
 
 const App = () => {
   useEffect(() => {
@@ -18,18 +26,24 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
+    <AntdApp>
+      <Router>
       <div className="min-h-screen bg-white">
-
         <Routes>
-          <Route path='/' element={<HomePage/>} />
+          <Route path='/' element={<HomePage />} />
+          <Route path='/userhome' element={<UserHomePage />} />
+          <Route path='/doctorhome' element={<DoctorHomePage />} />
           <Route path='/myappointment' element={<MyAppointment />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/doctorposts' element={<DoctorPosts />} />
+          <Route path='/userposts' element={<UserAllPosts />} />
+          <Route  path='/createpost' element={<CreatePost />} />
         </Routes>
 
       </div>
     </Router>
+    </AntdApp>
   );
 }
 

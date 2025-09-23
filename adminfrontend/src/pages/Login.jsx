@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { App, Button, Checkbox, Form, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import image1 from '../assets/artistic-blurry-colorful-wallpaper-background.jpg'
 import { useSnapshot } from 'valtio';
@@ -8,6 +8,7 @@ import state from '../store/state';
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { message } = App.useApp();
 
     const onFinish = async (values) => {
       setLoading(true);

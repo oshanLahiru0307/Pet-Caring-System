@@ -23,6 +23,7 @@ class UserServices {
             throw error;
         }
     }
+    
 }   
 
 export default UserServices;

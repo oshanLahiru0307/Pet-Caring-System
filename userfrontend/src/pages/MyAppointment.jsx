@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import state from '../store/state';
 import AppointmentServices from '../services/AppointmentServices';
-import { Table, Tag, Button, message, Spin, Empty } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { App,Table, Tag, Button, Spin, Empty } from 'antd';
 import dayjs from 'dayjs';
 import Navbar from '../components/Navbar';
 
 const MyAppointment = () => {
+  const { message } = App.useApp();
   const navigate = useNavigate();
   const snap = useSnapshot(state);
   const [appointments, setAppointments] = useState([]);

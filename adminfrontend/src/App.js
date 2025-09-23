@@ -2,19 +2,20 @@ import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Login from '../src/pages/Login';
 import AdminDashboard from "../src/pages/AdminDashboard";
-import ReceptionDashboard from '../src/pages/ReceptionDashboard';
+import { App as AntdApp } from "antd";
 
 function App() {
   return (
-    <div className="App">
+    <AntdApp>
+      <div className="App">
       <Router>
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/adminDashboard' element={<AdminDashboard/>}/>
-          <Route path='/receptionDashboard' element={<ReceptionDashboard/>}/>
         </Routes>
       </Router>
     </div>
+    </AntdApp>
   );
 }
 

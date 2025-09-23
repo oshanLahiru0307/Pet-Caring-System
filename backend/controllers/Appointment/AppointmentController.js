@@ -1,4 +1,4 @@
-const AppointmentSchema = require('../models/AppointmentSchema')
+const AppointmentSchema = require('../models/Appointment/AppointmentSchema')
 
 const getAllAppointments = async (req, res) => {
     try {

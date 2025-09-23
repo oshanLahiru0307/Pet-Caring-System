@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { App, Button, Checkbox, Form, Input } from 'antd';
 import UserServices from '../services/UserServices';
 import { useNavigate } from 'react-router-dom';
 import image1 from '../assets/artistic-blurry-colorful-wallpaper-background.jpg'
@@ -7,6 +7,7 @@ import { useSnapshot } from 'valtio';
 import state from '../store/state';
 
 const Register = () => {
+    const { message } = App.useApp();
     const navigate = useNavigate();
     const snap = useSnapshot(state);
 
@@ -58,6 +59,11 @@ const Register = () => {
             >
                 <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#333' }}>Register</h2>
 
+
+                <Form.Item name="role" initialValue="user" hidden>
+                    <Input />
+                </Form.Item>
+
                 <Form.Item
                     label="Full Name"
                     name="name"
@@ -79,7 +85,7 @@ const Register = () => {
 
                 <Form.Item
                     name="phone"
-                    label="Owner Contact"
+                    label="Contact"
                     rules={[
                         { required: true, message: "Please enter owner's contact" },
                         { pattern: /^\d{10}$/, message: "Contact number must be 10 digits" },

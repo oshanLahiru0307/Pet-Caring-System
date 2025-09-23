@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSnapshot } from "valtio";
+import { Button, Modal, Form, Input, DatePicker, Select, Dropdown, message } from "antd";
+import dayjs from "dayjs";
 import state from "../store/state";
 import doctorServies from "../services/DoctorServices";
 import appointmentServices from "../services/AppointmentServices";
-import { Button, Modal, Form, Input, DatePicker, Select, Dropdown, message } from "antd";
-import dayjs from "dayjs";
 import AppointmentServices from "../services/AppointmentServices";
 
 const { Option } = Select;
@@ -28,8 +28,10 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
+    localStorage.removeItem('roll');
     state.currentUser = null;
     state.currentUserName = null;
+    state.currentUserRoll = null;
     navigate('/');
   };
 
@@ -49,6 +51,24 @@ const Navbar = () => {
       label: 'Logout',
       onClick: handleLogout,
     },
+  ];
+
+  const doctorMenuItems = [
+    {
+      key: 'profile',
+      label: `Welcome, ${snap.currentUserName}`,
+      disabled: true,
+    },
+    {
+      key: 'logout',
+      label: 'Logout',
+      onClick: handleLogout,
+    },
+    {
+      key: 'posts',
+      label: 'My Posts',
+      onClick: () => navigate('/doctorposts'),
+    }
   ];
 
   const fetchDoctors = async () => {
@@ -119,6 +139,7 @@ const Navbar = () => {
   useEffect(() => {
     fetchDoctors();
     fetchAppointments();
+    console.log(snap.currentUserName, snap.currentUserRoll)
   }, []);
 
   return (
@@ -140,17 +161,18 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8" style={{ color: '#54413C' }}>
-            <a href="#home" className="hover:text-amber-700">Home</a>
+            <Link to="/" className="hover:text-amber-700">Home</Link>
             <a href="#about" className="hover:text-amber-700">About Us</a>
             <a href="#services" className="hover:text-amber-700">Services</a>
             <a href="#contact" className="hover:text-amber-700">Contact</a>
             <a href="#faq" className="hover:text-amber-700">FAQ</a>
+            <Link to="/userposts" className="hover:text-amber-700">Posts</Link>
           </nav>
 
           {/* Right side buttons */}
           <div className="hidden md:flex items-center gap-4">
             {/* Appointment Button - Only show when logged in */}
-            {snap.currentUser && (
+            {snap.currentUser && snap.currentUserRoll === 'user' && (
               <Button style={{ backgroundColor: '#54413C', color: 'white' }} onClick={showModal}>
                 Appointment
               </Button>
@@ -168,7 +190,7 @@ const Navbar = () => {
             {/* User dropdown - Only show when logged in */}
             {snap.currentUser && (
               <Dropdown
-                menu={{ items: userMenuItems }}
+                menu={snap.currentUserRoll === 'user' ? { items: userMenuItems } : { items: doctorMenuItems }}
                 placement="bottomRight"
                 arrow
               >

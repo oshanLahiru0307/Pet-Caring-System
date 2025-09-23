@@ -4,33 +4,40 @@ const Schema = mongoose.Schema;
 
 const DoctorSchema = new Schema({
 
-    doctorId:{
+    doctorId: {
         type: String,
         required: true
     },
-    name: { 
+    name: {
         type: String,
-        required: true },
-    specialty: { 
+        required: true
+    },
+    specialty: {
         type: String,
-        required: true },
-    contact: { 
+        required: true
+    },
+    contact: {
         type: String,
-        required: true },
-    email: { 
+        required: true
+    },
+    email: {
         type: String,
-        required: true, 
-        unique: true 
+        required: true,
+        unique: true
+    },
+    role: {
+        type: String,
+        default: "doctor",
     },
     availabilityDays: {
         type: [String],
-        required: true 
+        required: true
     },
     availabilityHours: {
         type: [String],
-        required: true 
+        required: true
     }
-    
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('Doctor', DoctorSchema);

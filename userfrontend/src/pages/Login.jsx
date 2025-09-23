@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import React, { useState } from 'react';
+import { App,Button, Checkbox, Form, Input } from 'antd';
 import UserServices from '../services/UserServices';
 import { useNavigate } from 'react-router-dom';
 import image1 from '../assets/artistic-blurry-colorful-wallpaper-background.jpg'
@@ -7,6 +7,7 @@ import { useSnapshot } from 'valtio';
 import state from '../store/state';
 
 const Login = () => {
+    const { message } = App.useApp();
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const snap = useSnapshot(state)
@@ -14,14 +15,21 @@ const Login = () => {
     const onFinish = async (values) => {
         try {
             const response = await UserServices.loginUser(values);
-            console.log("response",response);
+            console.log("response", response);
             setUser(response.name)
             message.success('Login successful!');
-            localStorage.setItem("userId", response._id )
+            localStorage.setItem("userId", response._id)
             localStorage.setItem("userName", response.name)
-            state.currentUser = response._id 
+            localStorage.setItem("roll", response.role)
+            state.currentUser = response._id
             state.currentUserName = response.name
-            navigate('/');
+            state.currentUserRoll = response.role
+            if (response.role === 'user') {
+                navigate('/');
+            }
+            else {
+                navigate('/doctorhome');
+            }
             console.log(response._id);
         } catch (error) {
             console.error('Login error:', error);
@@ -62,7 +70,7 @@ const Login = () => {
                     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                 }}
             >
-                <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#333' }}>Login</h2>
+                <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#333' }}>User Login</h2>
                 <Form.Item
                     label="Email"
                     name="email"
@@ -92,7 +100,7 @@ const Login = () => {
                     </Button>
                 </Form.Item>
                 <div style={{ textAlign: 'center', marginTop: 16 }}>
-                    Don't have an account? <p onClick={() => navigate('/register')} style={{ cursor:'pointer',color: '#1890ff' }}>Register now!</p>
+                    Don't have an account? <p onClick={() => navigate('/register')} style={{ cursor: 'pointer', color: '#1890ff' }}>Register now!</p>
                 </div>
             </Form>
         </div>

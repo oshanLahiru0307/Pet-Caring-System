@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ReceptionDashboard = () => {
+const UserHoomePage = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const ReceptionDashboard = () => {
   )
 }
 
-export default ReceptionDashboard
+export default UserHoomePage
