@@ -9,7 +9,7 @@ const {
     updateDoctorById } = require('../controllers/Doctor/DoctorController');
 
 
-//get all doctors
+//get all doctors...
 router.get('/', getAllDoctors);
 
 //get doctor by id
