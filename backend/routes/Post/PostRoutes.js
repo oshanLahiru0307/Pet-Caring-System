@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const PostController = require('../controllers/Post/PostController');
+const PostController = require('..//../controllers/PostController/PostController');
 
 // Define the directory for image uploads
 const uploadDir = 'uploads';
@@ -44,6 +44,6 @@ router.get('/user/:userId', PostController.getPostsByUserId);
 router.delete('/:id', PostController.deletePost);
 
 // Update a post by its ID
-router.patch('/:id', upload.single('image'), PostController.updatePost);
+router.patch('/:id', upload.single('imagePath'), PostController.updatePost);
 
 module.exports = router;

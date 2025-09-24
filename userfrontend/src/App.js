@@ -8,7 +8,9 @@ import UserHomePage from './pages/UserHomePage';
 import DoctorHomePage from './pages/DoctorHomePage';
 import DoctorPosts from './pages/DoctorPosts'
 import UserAllPosts from './pages/UserAllPosts';
-import CreatePost from './pages/createPost';
+import CreatePost from './pages/CreatePost';
+import UpdatePost from './pages/UpdatePost';
+import PostDetail from './pages/PostDetail';
 import state from './store/state';
 import {App as AntdApp} from "antd";
 
@@ -38,7 +40,10 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/doctorposts' element={<DoctorPosts />} />
           <Route path='/userposts' element={<UserAllPosts />} />
+          <Route path='/allposts' element={<UserAllPosts />} />
           <Route  path='/createpost' element={<CreatePost />} />
+          <Route  path='/updatepost/:id' element={<UpdatePost />} />
+          <Route  path='/post/:id' element={<PostDetail />} />
         </Routes>
 
       </div>

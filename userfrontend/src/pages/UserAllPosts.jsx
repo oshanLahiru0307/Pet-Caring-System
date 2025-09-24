@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import PostServices from '../services/PostServices';
 
@@ -8,6 +9,7 @@ const UserAllPosts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
    setLoading(true);
@@ -62,10 +64,16 @@ const UserAllPosts = () => {
                   <div className="p-6">
                     <h1 className="text-xl font-bold mb-2 text-gray-800">{post.title}</h1>
                     <p className="text-gray-600 line-clamp-3 mb-4">{post.content}</p>
-                    <div className="flex justify-between items-center text-sm text-gray-500">
+                    <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
                       <p>Author: {post.userName}</p>
                       <p>Date: {formatDate(post.createdAt)}</p>
                     </div>
+                    <button
+                      onClick={() => navigate(`/post/${post._id}`)}
+                      className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                    >
+                      View Post
+                    </button>
                   </div>
                 </div>
               ))}

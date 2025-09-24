@@ -1,4 +1,4 @@
-const Post = require('../models/Post/PostSchema');
+const Post = require('../../models/Post/PostSchema');
 const mongoose = require('mongoose');
 const fs = require('fs');
 

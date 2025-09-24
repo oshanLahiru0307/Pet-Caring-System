@@ -7,7 +7,7 @@ const {
     createAppointment, 
     deleteAppointment, 
     updateAppointment,
-    getAppointmentByUsername } = require('../controllers/Appointment/AppointmentController');
+    getAppointmentByUsername } = require('../../controllers/Appointment/AppointmentController');
 
 
 //get all appointments

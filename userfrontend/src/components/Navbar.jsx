@@ -60,14 +60,14 @@ const Navbar = () => {
       disabled: true,
     },
     {
-      key: 'logout',
-      label: 'Logout',
-      onClick: handleLogout,
-    },
-    {
       key: 'posts',
       label: 'My Posts',
       onClick: () => navigate('/doctorposts'),
+    },
+    {
+      key: 'logout',
+      label: 'Logout',
+      onClick: handleLogout,
     }
   ];
 
@@ -222,10 +222,10 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden" style={{ borderTop: '1px solid #FFD58E', backgroundColor: 'white' }}>
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#home" className="block px-3 py-2" style={{ color: '#54413C' }}>Home</a>
-              <a href="#about" className="block px-3 py-2" style={{ color: '#54413C' }}>About Us</a>
-              <a href="#services" className="block px-3 py-2" style={{ color: '#54413C' }}>Services</a>
-              <a href="#contact" className="block px-3 py-2" style={{ color: '#54413C' }}>Contact</a>
+              <a href="#home" className="block px-3 py-2" style={{ color: '#54413C' }}>HOME</a>
+              <a href="#about" className="block px-3 py-2" style={{ color: '#54413C' }}>ABOUT US</a>
+              <a href="#services" className="block px-3 py-2" style={{ color: '#54413C' }}>SERVICES</a>
+              <a href="#contact" className="block px-3 py-2" style={{ color: '#54413C' }}>CONTACT</a>
               <a href="#faq" className="block px-3 py-2" style={{ color: '#54413C' }}>FAQ</a>
 
               {/* Mobile authentication buttons */}

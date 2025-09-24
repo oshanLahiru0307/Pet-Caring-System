@@ -7,7 +7,7 @@ const {
     deleteUserById, 
     updateUserById, 
     loginUser, 
-    registerUser } = require('../controllers/User/UserController');  
+    registerUser } = require('../../controllers/User/UserController');  
 
 //getAllUsers   
 router.get('/', getAllUsers);

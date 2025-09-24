@@ -1,4 +1,4 @@
-const DoctorSchema = require('../models/Doctor/DoctorModel');
+const DoctorSchema = require('../../models/Doctor/DoctorModel');
 
 const getAllDoctors = async (req, res)=>{
     try {

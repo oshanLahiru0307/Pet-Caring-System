@@ -44,6 +44,40 @@ class PostServices {
         }
     }
 
+    static async deletePost(postId) {
+        try {
+            const response = await axios.delete(`${API_URL}${postId}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            throw error;
+        }
+    }
+
+    static async getSinglePostById(postId){
+        try{
+            const response = await axios.get(`${API_URL}${postId}`)
+            return response.data;
+        }catch(error){
+            console.error("Error fetching post:", error);
+            throw error;
+        }
+    }
+
+    static async updatePost(postId, formData) {
+        try {
+            const response = await axios.patch(`${API_URL}${postId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error updating post:", error);
+            throw error;
+        }
+    }
+
 }
 
 export default PostServices;

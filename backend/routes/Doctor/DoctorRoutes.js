@@ -6,7 +6,7 @@ const {
     getDoctorById, 
     createNewDoctor, 
     deleteDoctorById, 
-    updateDoctorById } = require('../controllers/Doctor/DoctorController');
+    updateDoctorById } = require('../../controllers/Docotor/DoctorController');
 
 
 //get all doctors...
