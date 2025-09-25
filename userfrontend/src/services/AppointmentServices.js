@@ -44,6 +44,38 @@ class AppointmentServices{
         }
     }
 
+    static async getAppointmentById(appointmentId) {
+        try {
+            const response = await axios.get(`${BASE_URI}/${appointmentId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching appointment by ID:', error);
+            throw error;
+        }
+    }
+
+    static async getAppointmentByStatus(status){
+        try {
+            const response = await axios.get(`${BASE_URI}/status/${status}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching appointment by status:', error);
+            throw error;
+        }
+    }
+
+    
+    static async updateAppointment(appointmentId, updatedData) {
+        try {
+            console.log(appointmentId)
+            const response = await axios.patch(`${BASE_URI}/${appointmentId}`, updatedData);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating appointment:', error);
+            throw error;
+        }
+    }
+
 }
 
 export default AppointmentServices;

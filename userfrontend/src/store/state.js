@@ -2,8 +2,12 @@ import { proxy } from "valtio";
 
 const state = proxy({
   currentUser: null,
-  currentUserRoll: null, 
-  currentUserName:null
+  // Keep both for compatibility; prefer currentUserRole in new code
+  currentUserRole: null,
+  currentUserRoll: null,
+  currentUserName:null,
+  activeChatPartnerId: null,
+  activeChatPartnerName: null
 
 });
 

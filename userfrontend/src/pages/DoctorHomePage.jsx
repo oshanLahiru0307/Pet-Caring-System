@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import About from '../components/About';
 import FAQ from '../components/FAQ';
 import Contact from '../components/Contact';
+import FloatingChatButton from '../components/FloatingChatButton';
 const DoctorHomePage = () => {
   return (
     <div>
@@ -20,6 +21,9 @@ const DoctorHomePage = () => {
               <FAQ />
               <Contact />
               <Footer />
+              
+              {/* Floating Chat Button for Doctors */}
+              <FloatingChatButton />
       
     </div>
   )

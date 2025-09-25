@@ -24,11 +24,14 @@ const Login = () => {
             state.currentUser = response._id
             state.currentUserName = response.name
             state.currentUserRoll = response.role
-            if (response.role === 'user') {
-                navigate('/');
+            state.currentUserRole = response.role
+            if (response.role === 'admin') {
+                navigate('/adminhome');
             }
-            else {
+            else if (response.role === 'doctor') {
                 navigate('/doctorhome');
+            }else{
+                navigate('/');
             }
             console.log(response._id);
         } catch (error) {

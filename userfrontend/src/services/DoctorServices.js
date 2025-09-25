@@ -17,6 +17,50 @@ class DoctorServices {
         }
     }
 
+
+static async getDoctorById(doctorId){
+        try{
+            const response = await axios.get(`${BASE_URI}/${doctorId}`);
+            return response.data;
+        }catch(error){
+            console.error('error while calling getDoctorById API', error);
+            throw error;
+        }
+    }
+
+    static async createDoctor(doctorData){
+        try{
+            const response = await axios.post(BASE_URI, doctorData);
+            return response.data;
+        }catch(error){
+            console.error('error while calling createDoctor API', error);
+            throw error;
+        }
+
+    }   
+
+    static async updateDoctor(doctorId, doctorData){
+        try{
+            const response = await axios.patch(`${BASE_URI}/${doctorId}`, doctorData);
+            return response.data;
+        }catch(error){
+            console.error('error while calling updateDoctor API', error);
+            throw error;
+        }   
+    }
+    
+    static async deleteDoctor(doctorId){
+        try{
+            const response = await axios.delete(`${BASE_URI}/${doctorId}`);
+            return response.data;
+        }catch(error){
+            console.error('error while calling deleteDoctor API', error);
+            throw error;
+        }
+    }
+
+
+
 }
 
 export default DoctorServices;
