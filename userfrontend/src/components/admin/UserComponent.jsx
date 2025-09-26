@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AdminDashbord = () => {
+function UserComponent() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const AdminDashbord = () => {
   )
 }
 
-export default AdminDashbord
+export default UserComponent

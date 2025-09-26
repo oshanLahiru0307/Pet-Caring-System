@@ -7,7 +7,9 @@ const state = proxy({
   currentUserRoll: null,
   currentUserName:null,
   activeChatPartnerId: null,
-  activeChatPartnerName: null
+  activeChatPartnerName: null,
+  activeIndex: 1,
+  adminActiveIndex: 1,
 
 });
 

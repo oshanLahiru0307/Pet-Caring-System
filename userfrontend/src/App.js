@@ -11,6 +11,7 @@ import UserAllPosts from './pages/UserAllPosts';
 import CreatePost from './pages/CreatePost';
 import UpdatePost from './pages/UpdatePost';
 import PostDetail from './pages/PostDetail';
+import AdminHomePage from './pages/AdminDashboard';
 import state from './store/state';
 import {App as AntdApp} from "antd";
 
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/' element={<HomePage />} />
           <Route path='/userhome' element={<UserHomePage />} />
           <Route path='/doctorhome' element={<DoctorHomePage />} />
+          <Route path='/adminhome' element={<AdminHomePage />} />
           <Route path='/myappointment' element={<MyAppointment />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

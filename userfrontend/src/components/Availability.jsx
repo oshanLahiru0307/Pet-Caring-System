@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Modal, Button, DatePicker, Input, Select, Form, message} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, DatePicker, Input, Select, Form, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import state from '../store/state';
@@ -8,7 +8,7 @@ import doctorServices from '../services/DoctorServices';
 import dayjs from "dayjs";
 import AppointmentServices from '../services/AppointmentServices';
 
-const {Option} = Select;
+const { Option } = Select;
 
 const schedule = [
   { day: 'Mon', hours: '09:00 - 17:00' },
@@ -42,20 +42,20 @@ const Availability = () => {
     form.resetFields();
   };
 
-  const fetchAppointments = async()=> {
-    try{
+  const fetchAppointments = async () => {
+    try {
       const response = await AppointmentServices.getAppointment()
       setAppointments(response)
-    }catch(error){
+    } catch (error) {
       console.error('failed to load appointment', error)
     }
   }
 
-  const fetchDoctors = async ()=> {
-    try{
+  const fetchDoctors = async () => {
+    try {
       const response = await doctorServices.getDoctors();
       setDoctors(response);
-    }catch(error){
+    } catch (error) {
       console.error('failed get doctors details', error);
       message.error("Failed to load doctor details.");
     }
@@ -65,7 +65,7 @@ const Availability = () => {
     if (appointment.length === 0) {
       return 'A001';
     }
-    
+
     // Sort appointments by ID to find the last one
     const sortedAppointments = [...appointment].sort((a, b) => {
       const idA = parseInt(a.appointmentId.substring(1));
@@ -76,7 +76,7 @@ const Availability = () => {
     const lastAppointment = sortedAppointments[sortedAppointments.length - 1];
     const lastIdNumber = parseInt(lastAppointment.appointmentId.substring(1));
     const nextIdNumber = lastIdNumber + 1;
-    
+
     // Pad the number with leading zeros
     const paddedId = String(nextIdNumber).padStart(3, '0');
     return `A${paddedId}`;
@@ -90,7 +90,7 @@ const Availability = () => {
         appointmentId: newAppointmentId,
         appointmentDate: dayjs(values.appointmentDate).toISOString(),
       };
-      
+
       const response = await appointmentServices.createAppointment(appointmentData);
       console.log("Appointment created:", response);
       message.success("Appointment booked successfully!");
@@ -141,12 +141,12 @@ const Availability = () => {
         title="Book Appointment"
         open={isModalOpen}
         onCancel={handleCancel}
-        footer={null} 
+        footer={null}
       >
         <Form
           form={form}
           layout="vertical"
-          onFinish={handleSubmitForm} 
+          onFinish={handleSubmitForm}
         >
           {/* Pet name */}
           <Form.Item
@@ -172,9 +172,13 @@ const Availability = () => {
             label="Pet Type"
             rules={[{ required: true, message: "Please select pet type" }]}
           >
-            <Input placeholder="Enter pet's type" />
+            <Select placeholder="type">
+              <Option value="pending">Dog</Option>
+              <Option value="completed">Cat</Option>
+              <Option value="cancelled">Other...</Option>
+            </Select>
           </Form.Item>
-          
+
           {/* Owner Contact */}
           <Form.Item
             name="contact"
